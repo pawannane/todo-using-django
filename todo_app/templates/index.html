@@ -1,0 +1,48 @@
+{% extends "boilerplate.html" %}
+
+{% block content %}
+  {% csrf_token %}
+
+  <h1 class="my-4 text-center">Todo App</h1>
+  {% if user.is_authenticated %}
+
+  <form class="my-4" method="post">
+    {% csrf_token %}
+    <div class="mb-3">
+      <input type="text" class="form-control" name="todo" placeholder="Enter your todo here" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+
+  <table class="table table-striped-columns mt-4">
+    <thead>
+      <tr>
+        <th scope="col">Index</th>
+        <th scope="col">Title</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for todo in todos %}
+        <tr id="{{forloop.counter}}">
+          <th scope="row">{{forloop.counter}}</th>
+          <td>{{todo.task}}</td>
+            {% if todo.completed %}
+              <td>Completed</td>
+            {% else %}
+              <td>In Progress</td>
+            {% endif %}
+          <td>
+            <a href="{% url 'update_todo' todo.id %}" class="btn btn-primary">Update Status</a>
+            <a href="{% url 'delete_todo' todo.id %}" class="btn btn-danger">Delete</a>
+          </td>
+      {% endfor %}
+    </tbody>
+  </table>
+  {% else %}
+    <div class="alert alert-info mt-4 text-center">Please login first to add/view todos</div>
+  {% endif %}
+  
+{% endblock  %}
+    
