@@ -12,7 +12,7 @@ def home(request):
         new_todo = todo.objects.create(user=user, task=task)
         new_todo.save()
 
-    todos = todo.objects.all()
+    todos = todo.objects.filter(user=request.user)
     return render(request, 'index.html', {'todos': todos})
 
 def login_user(request):
